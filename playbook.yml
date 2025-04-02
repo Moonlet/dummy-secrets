@@ -2,7 +2,7 @@
   become: true
   gather_facts: false
   roles:
-    - role: "moonlet-secrets"
+    - role: "moonlet-secrets2"
       vars:
         from_directory: "lb/devops/"
         to_directory: "./target/"
