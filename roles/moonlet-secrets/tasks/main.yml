@@ -1,0 +1,20 @@
+- name: Ensure folder structure
+  file:
+    path: "{{ to_directory }}/{{ item | dirname }}"
+    state: directory
+    recurse: yes
+    follow: false
+  with_items: "{{ files }}"
+
+- name: Copy secret files
+  copy:
+    # group: "{{ group }}"
+    # owner: "{{ owner }}"
+    # mode: u=r,g=,o=
+    # force: yes
+    decrypt: yes
+    src: "vaults/{{ from_directory }}{{ item }}"
+    dest: "{{ to_directory }}/{{ item }}"
+    follow: false
+    # validate: '/usr/bin/cat %s'
+  with_items: "{{ files }}"

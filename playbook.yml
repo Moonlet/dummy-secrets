@@ -1,0 +1,12 @@
+- hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - role: "moonlet-secrets"
+      vars:
+        from_directory: "lb/devops/"
+        to_directory: "./target/"
+        files:
+          - ceva1.pem
+          - ceva2.pem
+          - /sub/ceva3.pem
