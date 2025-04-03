@@ -5,7 +5,7 @@
     - role: "moonlet-secrets2"
       vars:
         from_directory: "lb/devops/"
-        to_directory: "./target/"
+        # to_directory: "./target/"
         files:
           - ceva1.pem
           - ceva2.pem
