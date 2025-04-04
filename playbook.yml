@@ -2,10 +2,10 @@
   become: true
   gather_facts: false
   roles:
-    - role: "moonlet-secrets2"
+    - role: "moonlet-secrets"
       vars:
-        # from_directory: "lb/devops/"
-        # to_directory: "./target/"
+        from_directory: "lb/devops/"
+        to_directory: "./target/"
         # files:
         #   - ceva1.pem
         #   - ceva2.pem

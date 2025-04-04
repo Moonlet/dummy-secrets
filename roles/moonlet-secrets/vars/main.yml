@@ -1,3 +1,2 @@
-# roles/common/vars/main.yml
-
-# This file is intentionally left blank.
+---
+# vars file for moonlet-secrets
