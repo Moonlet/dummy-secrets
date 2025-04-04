@@ -18,5 +18,5 @@ echo "copying files from ${FROM_DIRECTORY} to ${TO_DIRECTORY} with VAULT_ID: $VA
 
 # Run the Ansible playbook with the provided parameters
 ansible-playbook playbook.yml -i localhost, --connection=local \
-  --vault-id ${VAULT_ID}@scripts/vault-pass-client.sh \
+  --vault-id ${VAULT_ID}@vault-pass-client.sh \
   -e "from_directory=${FROM_DIRECTORY} to_directory=${TO_DIRECTORY}"
