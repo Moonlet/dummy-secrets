@@ -1,20 +1,27 @@
+- name: Set vault path prefix
+  set_fact:
+    vaults_path_prefix: "roles/moonlet-secrets2/files/vaults/{{ from_directory }}"
+
+- name: Gather files from source directory
+  find:
+    paths: "{{ vaults_path_prefix }}"
+    recurse: yes
+    file_type: file
+  register: found_files
+
+
 - name: Ensure folder structure
   file:
-    path: "{{ to_directory }}/{{ item | dirname }}"
+    path: "{{ to_directory }}/{{ item.path | replace(vaults_path_prefix, '') | dirname }}"
     state: directory
     recurse: yes
     follow: false
-  with_items: "{{ files }}"
+  loop: "{{ found_files.files }}"
 
-- name: Copy secret files
+- name: Copy encrypted files
   copy:
-    # group: "{{ group }}"
-    # owner: "{{ owner }}"
-    # mode: u=r,g=,o=
-    # force: yes
     decrypt: yes
-    src: "vaults/{{ from_directory }}{{ item }}"
-    dest: "{{ to_directory }}/{{ item }}"
+    src: "{{ item.path }}"
+    dest: "{{ to_directory }}/{{ item.path | replace(vaults_path_prefix, '') }}"
     follow: false
-    # validate: '/usr/bin/cat %s'
-  with_items: "{{ files }}"
+  loop: "{{ found_files.files }}"
