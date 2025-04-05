@@ -30,25 +30,19 @@ for file in $(find "$FROM_DIRECTORY" -type f); do
     # Create the corresponding directory structure in the destination folder
     mkdir -p "$TO_DIRECTORY/$(dirname "$relative_path")"
     
-    # Check if the file already exists in the destination folder
-    if [ -f "$TO_DIRECTORY/$relative_path" ]; then
-        echo "File '$TO_DIRECTORY/$relative_path' already exists. Deleting it..."
-        rm -f "$TO_DIRECTORY/$relative_path"
-    fi
-    
-    # Encrypt the file and copy it to the destination folder
-    ./secret-create.sh ${VAULT_ID} "$file"
-    if [ $? -ne 0 ]; then
-        echo "Error: Failed to encrypt and copy '$file'."
-        exit 1
-    fi
-
-        # Copy the encrypted file to the destination folder
-    cp "$file" "$TO_DIRECTORY/$relative_path"
+    # Force copy the file to the destination folder
+    cp -f "$file" "$TO_DIRECTORY/$relative_path"
     if [ $? -ne 0 ]; then
         echo "Error: Failed to copy '$file' to '$TO_DIRECTORY/$relative_path'."
         exit 1
     fi
+
+    # Encrypt the file at the destination folder
+    ./secret-create.sh ${VAULT_ID} "$TO_DIRECTORY/$relative_path"
+    if [ $? -ne 0 ]; then
+        echo "Error: Failed to encrypt '$TO_DIRECTORY/$relative_path'."
+        exit 1
+    fi
 done
 
-echo "All files have been encrypted and copied to '$TO_DIRECTORY'."#!/bin/bash
+echo "All files have been encrypted and copied to '$TO_DIRECTORY'."
